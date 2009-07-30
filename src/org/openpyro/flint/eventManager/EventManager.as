@@ -41,22 +41,20 @@ package org.openpyro.flint.eventManager
 		
 		private var targetMap:Dictionary;
 		
-		/**
-		 * 
-		 */ 
-		public function addObserver(observer:IEventObserver, eventType:String, sender:Object=null):void{
+		
+		public function addListener(observer:Object, eventType:String, callback:Function, sender:Object=null):void{
 			if(targetMap[eventType] == null){
-				targetMap[eventType] = [{observer:observer, sender:sender}];
+				targetMap[eventType] = [{observer:observer, sender:sender, callback:callback}];
 			}
 			else{
-				targetMap[eventType].push({observer:observer, sender:sender});
+				targetMap[eventType].push({observer:observer, sender:sender, callback:callback});
 			}
 		}
 		
 		/**
 		 * Removes an observer for a particular eventType
 		 */ 
-		public function removeObserver(observer:IEventObserver, eventType:String):void{
+		public function removeObserver(observer:Object, eventType:String):void{
 			var observers:Array = targetMap[eventType];
 			if(!observers) return;
 			var observerIndex:Number = -1;
@@ -81,7 +79,7 @@ package org.openpyro.flint.eventManager
 				var possibleTargets:Array = targetMap[event.eventType];
 				for each(var target:Object in possibleTargets){
 					if(target.sender == event.currentTarget || target.sender == null){
-						IEventObserver(target.observer).onEvent(event);
+						target.callback.call(target.observer, event)
 					}
 				}
 			}
