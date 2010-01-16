@@ -105,13 +105,17 @@ package org.openpyro.flint.net
 			_variables[param] = value;
 		}
 		
-		private var _requestHeaders:Array = null;
+		private var _requestHeaders:Array;
+		private var _manageCookies:Boolean = true;
 		
 		public function addRequestHeader(name:String, value:String):void{
 			var header:URLRequestHeader = new URLRequestHeader(name, value);
 			if(!_requestHeaders){
 				_requestHeaders = new Array();
 			}
+			if(name.toLowerCase() == "cookie"){
+				_manageCookies = false;
+			}		
 			_requestHeaders.push(header);
 		}
 		
@@ -124,12 +128,15 @@ package org.openpyro.flint.net
 			if(!_urlRequest){
 				var _urlRequest:URLRequest = new URLRequest(_url);
 				_urlRequest.data = _variables;
+				_urlRequest.manageCookies = _manageCookies;
 			}
 			if(_requestHeaders != null){
 				_urlRequest.requestHeaders = _requestHeaders;
+				_urlRequest.manageCookies = false; 
 			}
 			_urlRequest.method = URLRequestMethod.GET;
 			_urlLoader.load(_urlRequest);
+			
 		}
 		
 		/**
