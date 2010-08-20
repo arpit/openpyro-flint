@@ -58,6 +58,9 @@ package org.openpyro.flint.utils{
 						case 0: 	if(localBetaRevisionNumber < latestBetaRevisionNumber){
 										return betaVersion;	
 									}
+									else{
+										return localVersion;
+									}
 									break;
 						case -1:   	return localVersion;
 									break

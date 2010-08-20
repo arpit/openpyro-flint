@@ -62,6 +62,16 @@ package org.openpyro.flint.utils
 			
 			selected = Version.selectLatest(v5, v1, v4);
 			assertTrue(selected == v5);
+		
+			selected = Version.selectLatest(v5, v1, null);
+			assertTrue(selected == v5);
+			
+			var vx:Version = new Version("0.7.3-beta1");
+			var vz:Version = new Version("0.7.0");
+			var vy:Version = new Version("0.7.3-beta1")
+			selected = Version.selectLatest(vz, vx ,vy);
+			assertTrue(selected == vx);
+		
 			
 		}
 	}
